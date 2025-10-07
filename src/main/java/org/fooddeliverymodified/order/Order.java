@@ -1,5 +1,7 @@
 package org.fooddeliverymodified.order;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.enums.OrderStatus;
 import org.fooddeliverymodified.exceptions.InvalidPaymentAmountException;
 import org.fooddeliverymodified.exceptions.OrderAlreadyDeliveredException;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Order implements DeliveryCalculator, OrderValidator {
+
+    private static final Logger logger = LogManager.getLogger(Order.class.getName());
 
     private Customer customer;
     private Restaurant restaurant;
@@ -66,7 +70,7 @@ public class Order implements DeliveryCalculator, OrderValidator {
 
     public BigDecimal getChange(BigDecimal paidAmount) {
         if (payment == null) {
-            System.out.println("order not paid yet!");
+            logger.info("order not paid yet!");
             return BigDecimal.ZERO;
         }
         return paidAmount.subtract(payment.getAmount());
@@ -133,6 +137,6 @@ public class Order implements DeliveryCalculator, OrderValidator {
 
     @Test("tester")
     public void printii(){
-        System.out.println("test print" + calculateTotal());
+        logger.info("test print {} ",calculateTotal());
     }
 }

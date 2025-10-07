@@ -1,5 +1,8 @@
 package org.fooddeliverymodified.deliveryperson;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.fooddeliverymodified.delivery.Delivery;
 import org.fooddeliverymodified.interfaces.IDeliver;
 import org.fooddeliverymodified.order.Order;
 
@@ -8,6 +11,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class DeliveryPerson implements IDeliver {
+
+    private static final Logger logger = LogManager.getLogger(DeliveryPerson.class.getName());
 
     private static List<DeliveryPerson> dp = new ArrayList<>();
 
@@ -28,9 +33,9 @@ public class DeliveryPerson implements IDeliver {
         if (available) {
             currentOrder = order;
             available = false;
-            System.out.println("Delivery person " + name + " assigned to deliver order.");
+            logger.info("Delivery person {} assigned to deliver order.", name);
         } else {
-            System.out.println("Delivery person " + name + " is busy.");
+            logger.info("Delivery person {} Busy.", name);
         }
     }
 

@@ -1,9 +1,14 @@
 package org.fooddeliverymodified.menu;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
+
+    private static final Logger logger = LogManager.getLogger(Menu.class.getName());
 
     private List<MenuItems> menu;
 
@@ -16,7 +21,7 @@ public class Menu {
     }
 
     public void showMenu() {
-        System.out.println("Menu:");
+        logger.info("Menu");
         for(MenuItems item : menu) {
             item.display();
         }

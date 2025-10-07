@@ -1,10 +1,14 @@
 package org.fooddeliverymodified.delivery;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.deliveryperson.DeliveryPerson;
 import org.fooddeliverymodified.interfaces.Trackable;
 import org.fooddeliverymodified.order.Order;
 
 public class Delivery implements Trackable {
+
+    private static final Logger logger = LogManager.getLogger(Delivery.class.getName());
 
     private Order order;
     private DeliveryPerson deliveryPerson;
@@ -29,14 +33,14 @@ public class Delivery implements Trackable {
     }
 
     public void startDelivery() {
-        System.out.println("Order is on the way with " + deliveryPerson.getName() + " using " + type);
+        logger.info("Order is on the way with {} using {}", deliveryPerson.getName(), type);
         if (order.getPayment() == null) {
-            System.out.println("⚠ Order not paid yet!");
+            logger.warn("⚠ Order not paid yet!");
         }
     }
 
     @Override
     public void track() {
-        System.out.println("Tracking delivery for " + order.getCustomer().getName() + " by " + deliveryPerson.getName());
+        logger.info("Tracking delivery for {} by {}", order.getCustomer().getName(), deliveryPerson.getName());
     }
 }

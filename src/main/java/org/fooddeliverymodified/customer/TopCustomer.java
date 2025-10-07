@@ -4,7 +4,6 @@ import org.fooddeliverymodified.enums.Discount;
 import org.fooddeliverymodified.lambdas.TopCustomerPromo;
 import org.fooddeliverymodified.order.Order;
 
-
 public final class TopCustomer extends Customer implements TopCustomerPromo {
 
     private final String code;
@@ -17,7 +16,6 @@ public final class TopCustomer extends Customer implements TopCustomerPromo {
     public String getCode() {
         return code;
     }
-
 
     @Override
     public double calculateWithPromoCode(Order order) {

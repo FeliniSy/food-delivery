@@ -60,7 +60,7 @@ public class FoodDeliveryService {
     }
 
     public void addRestaurant(Restaurant restaurant, int index) throws RestaurantExcp {
-        while(restaurants.size() <= index) {
+        while (restaurants.size() <= index) {
             restaurants.add(null);
         }
         if (restaurants.get(index) != null) {
@@ -75,5 +75,4 @@ public class FoodDeliveryService {
         }
         deliveryPeople.add(person);
     }
-
 }

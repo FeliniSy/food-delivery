@@ -1,5 +1,7 @@
 package org.fooddeliverymodified.reflectionTest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.order.Order;
 import org.fooddeliverymodified.customer.Customer;
 import org.fooddeliverymodified.restaurants.Restaurant;
@@ -10,19 +12,21 @@ import java.math.BigDecimal;
 
 public class Reflection {
 
+    private static final Logger logger = LogManager.getLogger(Reflection.class);
+
     public static void main(String[] args) throws Exception {
         Class<Order> clazz = Order.class;
 
         for (Field f : clazz.getDeclaredFields()) {
-            System.out.println("Field: " + f.getName() + ", Type: " + f.getType());
+            logger.info("Field: " + f.getName() + ", Type: " + f.getType());
         }
 
         for (Constructor<?> c : clazz.getConstructors()) {
-            System.out.println("Constructor: " + c.getName() + ", params: " + c.getParameterCount());
+            logger.info("Constructor: " + c.getName() + ", params: " + c.getParameterCount());
         }
 
         for (Method m : clazz.getDeclaredMethods()) {
-            System.out.println("Method: " + m.getName() + ", return type: " + m.getReturnType());
+            logger.info("Method: " + m.getName() + ", return type: " + m.getReturnType());
         }
 
         Constructor<Order> cons = clazz.getConstructor(Customer.class, Restaurant.class);
@@ -34,6 +38,6 @@ public class Reflection {
         Method calcTotal = clazz.getDeclaredMethod("calculateTotal");
         calcTotal.setAccessible(true);
         BigDecimal totalPrice = (BigDecimal) calcTotal.invoke(reflectedOrder);
-        System.out.println("Reflected total price: " + totalPrice);
+        logger.info("Reflected total price: " + totalPrice);
     }
 }

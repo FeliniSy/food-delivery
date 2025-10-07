@@ -1,5 +1,7 @@
 package org.fooddeliverymodified;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.base.FoodDeliveryService;
 import org.fooddeliverymodified.customer.Customer;
 import org.fooddeliverymodified.delivery.DeliveryLogger;
@@ -24,11 +26,15 @@ import org.fooddeliverymodified.restaurants.Restaurant;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.*;
-import java.util.function.*;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Main {
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public Main() {
         super();
@@ -51,9 +57,9 @@ public class Main {
         try {
             app.addRestaurant(restaurant, 5); // Checked exception
         } catch (RestaurantExcp e) {
-            System.out.println("Exception caught: " + e.getMessage());
+            logger.warn("Exception caught: " + e.getMessage());
         } finally {
-            System.out.println(restaurant);
+            logger.info(restaurant);
         }
 
         Customer customer1 = new Customer("John Doe", "nikea str");
@@ -63,7 +69,7 @@ public class Main {
 
         Order order1 = new Order(customer2, restaurant);
 
-        customerSet.forEach(customer -> System.out.println(customer.getName()));
+        customerSet.forEach(customer -> logger.info(customer.getName()));
         customerSet.forEach(System.out::println);
 
         MenuItems pizza = new MenuItems(CuisineType.ITALIAN);
@@ -76,22 +82,22 @@ public class Main {
             logger.log("New delivery started for customer: " + order1.getCustomer().getName());
             order1.setStatus(OrderStatus.NEW);
         } catch (IOException e) {
-            System.out.println("Logging failed: " + e.getMessage());
+            logger.info("Logging failed: " + e.getMessage());
         }
 
         OrderNode<Customer, Order, MenuItems> orderNode = new OrderNode<>(customer1, order1);
         orderNode.addItem(pizza);
-        System.out.println(orderNode);
+        logger.info(orderNode);
 
         //Record
-        DeliveryAssignment da = new DeliveryAssignment(dp,order1,DeliverySpeed.STANDARD);
-        System.out.println("Delivery assignment for customer: " + order1.getCustomer().getName());
+        DeliveryAssignment da = new DeliveryAssignment(dp, order1, DeliverySpeed.STANDARD);
+        logger.info("Delivery assignment for customer: " + order1.getCustomer().getName());
 
         //the first element from set
         String firstCustomer = customerSet.iterator()
                 .next().
                 getName();
-        System.out.println(firstCustomer);
+        logger.info(firstCustomer);
 
         //DeliveryCalculator
         //costumer2 address nikea str, restaurant address tsereteli
@@ -103,7 +109,7 @@ public class Main {
 
         double distance = 4.3;
         double fee = order1.calculate(distance, order1.calculateTotal());
-        System.out.println("Delivery fee: " + fee);
+        logger.info("Delivery fee: " + fee);
 
         //OrderValidator
         OrderValidator validator = order ->
@@ -111,31 +117,31 @@ public class Main {
                         && order.getCustomer() != null;
 
         if (validator.validate(order1)) {
-            System.out.println("order is valid");
+            logger.info("order is valid");
         } else {
-            System.out.println("order is not valid");
+            logger.info("order is not valid");
         }
 
         //TopCustomerPromo
         TopCustomerPromo promo = order ->
                 order.calculateTotal().doubleValue() * Discount.PROMOCODE.getDiscount();
 
-        System.out.println("Total with promo: " + promo.calculateWithPromoCode(order1));
+        logger.info("Total with promo: " + promo.calculateWithPromoCode(order1));
 
         //lambda Utils
-        System.out.println("---------------------------");
-        if(LambdaUtils.EXPENSIVE_ORDER.test(order1)) {
-            System.out.println("Expensive order");
+        logger.info("---------------------------");
+        if (LambdaUtils.EXPENSIVE_ORDER.test(order1)) {
+            logger.info("Expensive order");
         }
-        System.out.println("Customer " + LambdaUtils.CUSTOMER_NAME.apply(order1));
+        logger.info("Customer " + LambdaUtils.CUSTOMER_NAME.apply(order1));
 
-        System.out.println("Delivery time " + LambdaUtils.DELIVERY_TIME.get());
+        logger.info("Delivery time " + LambdaUtils.DELIVERY_TIME.get());
 
         LambdaUtils.PRINT_ORDER.accept(order1);
 
-        double totalFee = LambdaUtils.ADD_DELIVERY_FEE.apply(10.0,5.0);
-        System.out.println("Total fee: " + totalFee);
-        System.out.println("----------------------");
+        double totalFee = LambdaUtils.ADD_DELIVERY_FEE.apply(10.0, 5.0);
+        logger.info("Total fee: " + totalFee);
+        logger.info("----------------------");
 
         //---------streams-----------------
         //distinct and foreach
@@ -153,13 +159,13 @@ public class Main {
         BigDecimal total = List.of(order1).stream()
                 .map(Order::calculateTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println("total revenue: " + total);
+        logger.info("total revenue: " + total);
 
         //sorted
         List<Order> sortedOrders = List.of(order1).stream()
                 .sorted(Comparator.comparing(Order::calculateTotal))
                 .toList();
-        System.out.println("Sorted orders: " + sortedOrders);
+        logger.info("Sorted orders: " + sortedOrders);
 
         //filter
         List<Customer> filteredName = customerSet.stream()
@@ -175,11 +181,11 @@ public class Main {
         String joinedNames = customerSet.stream().map(Customer::getName)
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("No customers");
-        System.out.println("All customers: " + joinedNames);
+        logger.info("All customers: " + joinedNames);
 
         boolean allAvailable = List.of(dp).stream()
                 .allMatch(DeliveryPerson::isAvailable);
-        System.out.println("All couriers available? " + allAvailable);
+        logger.info("All couriers available? " + allAvailable);
 
         //Custom Reflection
         Order testOrder = new Order(new Customer("jason", "tbilisi"),
@@ -189,7 +195,7 @@ public class Main {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(Test.class)) {
                 Test test = method.getAnnotation(Test.class);
-                System.out.println(test.value());
+                logger.info(test.value());
                 method.invoke(order1);
             }
         }

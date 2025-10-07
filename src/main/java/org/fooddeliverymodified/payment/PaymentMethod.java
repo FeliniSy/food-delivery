@@ -1,5 +1,7 @@
 package org.fooddeliverymodified.payment;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.enums.PaymentType;
 import org.fooddeliverymodified.interfaces.IPay;
 import org.fooddeliverymodified.order.Order;
@@ -8,6 +10,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public abstract class PaymentMethod implements IPay {
+
+    private static final Logger logger = LogManager.getLogger(PaymentMethod.class);
 
     private final BigDecimal amount;
     private LocalDateTime paymentTime;
@@ -40,7 +44,7 @@ public abstract class PaymentMethod implements IPay {
 
     //unchangeable
     public final void printPaymentInfo() {
-        System.out.println("Payment amount: " + amount);
+        logger.info("Payment amount: " + amount);
     }
 
     public void setType(PaymentType type) {

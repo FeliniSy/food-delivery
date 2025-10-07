@@ -1,11 +1,15 @@
 package org.fooddeliverymodified.payment;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.interfaces.IPay;
 import org.fooddeliverymodified.order.Order;
 
 import java.math.BigDecimal;
 
 public class CreditCardPayment extends PaymentMethod {
+
+    private static final Logger logger = LogManager.getLogger(CreditCardPayment.class);
 
     private String cardNumber;
 
@@ -24,17 +28,17 @@ public class CreditCardPayment extends PaymentMethod {
 
     @Override
     public void process(IPay payment) {
-        System.out.println("Payment method credit card payment. amount" + getAmount());
+        logger.info("Payment method credit card payment. amount" + getAmount());
     }
 
     @Override
     public void pay(Order order) {
-        System.out.println("Paying order of total $ " + order.calculateTotal());
+        logger.info("Paying order of total $ " + order.calculateTotal());
     }
 
     @Override
     public void makePayment(BigDecimal amount) {
-        System.out.println("credit cart payment. amount: " + getAmount());
+        logger.info("credit cart payment. amount: " + getAmount());
     }
 
 }

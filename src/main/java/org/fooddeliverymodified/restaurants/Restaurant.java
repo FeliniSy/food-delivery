@@ -1,5 +1,7 @@
 package org.fooddeliverymodified.restaurants;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fooddeliverymodified.customer.Customer;
 import org.fooddeliverymodified.interfaces.IMenu;
 import org.fooddeliverymodified.interfaces.Reviewable;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Restaurant implements IMenu, Reviewable {
+
+    private static final Logger logger = LogManager.getLogger(Restaurant.class);
 
     private static int restaurantCount;
 
@@ -22,7 +26,7 @@ public class Restaurant implements IMenu, Reviewable {
     }
 
     public static void getRestaurantCount() {
-        System.out.println("total number of restaurants: " + restaurantCount);
+        logger.info("total number of restaurants: " + restaurantCount);
     }
 
     public Restaurant(String name, String address, Menu menu) {
