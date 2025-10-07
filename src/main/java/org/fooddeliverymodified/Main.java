@@ -61,36 +61,36 @@ public class Main {
         customerSet.add(customer1);
         customerSet.add(customer2);
 
-        Order order = new Order(customer2, restaurant);
+        Order order1 = new Order(customer2, restaurant);
 
-        customerSet
-                .stream()
-                .map(Customer::getName)
-                .forEach(System.out::println);
+        customerSet.forEach(customer -> System.out.println(customer.getName()));
+        customerSet.forEach(System.out::println);
 
         MenuItems pizza = new MenuItems(CuisineType.ITALIAN);
         pizza.addMenuItems("Pizza", new BigDecimal(15));
-        order.addItem(pizza);
+        order1.addItem(pizza);
 
         DeliveryPerson dp = new DeliveryPerson("George", "Kutaisi");
 
         try (DeliveryLogger logger = new DeliveryLogger("delivery_log.txt")) {
-            logger.log("New delivery started for customer: " + order.getCustomer().getName());
-            order.setStatus(OrderStatus.NEW);
+            logger.log("New delivery started for customer: " + order1.getCustomer().getName());
+            order1.setStatus(OrderStatus.NEW);
         } catch (IOException e) {
             System.out.println("Logging failed: " + e.getMessage());
         }
 
-        OrderNode<Customer, Order, MenuItems> orderNode = new OrderNode<>(customer1, order);
+        OrderNode<Customer, Order, MenuItems> orderNode = new OrderNode<>(customer1, order1);
         orderNode.addItem(pizza);
         System.out.println(orderNode);
 
         //Record
-        DeliveryAssignment da = new DeliveryAssignment(dp,order,DeliverySpeed.STANDARD);
-        System.out.println("Delivery assignment for customer: " + order.getCustomer().getName());
+        DeliveryAssignment da = new DeliveryAssignment(dp,order1,DeliverySpeed.STANDARD);
+        System.out.println("Delivery assignment for customer: " + order1.getCustomer().getName());
 
         //the first element from set
-        String firstCustomer = customerSet.iterator().next().getName();
+        String firstCustomer = customerSet.iterator()
+                .next().
+                getName();
         System.out.println(firstCustomer);
 
         //DeliveryCalculator
@@ -102,33 +102,36 @@ public class Main {
         });
 
         double distance = 4.3;
-        double fee = order.calculate(distance, order.calculateTotal());
+        double fee = order1.calculate(distance, order1.calculateTotal());
         System.out.println("Delivery fee: " + fee);
 
         //OrderValidator
-        OrderValidator validator = order1 -> !order1.getItems().isEmpty() && order1.getCustomer() != null;
+        OrderValidator validator = order ->
+                !order.getItems().isEmpty()
+                        && order.getCustomer() != null;
 
-        if (validator.validate(order)) {
+        if (validator.validate(order1)) {
             System.out.println("order is valid");
         } else {
             System.out.println("order is not valid");
         }
 
         //TopCustomerPromo
-        TopCustomerPromo promo = order1 -> order1.calculateTotal().doubleValue() * Discount.PROMOCODE.getDiscount();
+        TopCustomerPromo promo = order ->
+                order.calculateTotal().doubleValue() * Discount.PROMOCODE.getDiscount();
 
-        System.out.println("Total with promo: " + promo.calculateWithPromoCode(order));
+        System.out.println("Total with promo: " + promo.calculateWithPromoCode(order1));
 
-        //labda Utils
+        //lambda Utils
         System.out.println("---------------------------");
-        if(LambdaUtils.EXPENSIVE_ORDER.test(order)) {
+        if(LambdaUtils.EXPENSIVE_ORDER.test(order1)) {
             System.out.println("Expensive order");
         }
-        System.out.println("Customer " + LambdaUtils.CUSTOMER_NAME.apply(order));
+        System.out.println("Customer " + LambdaUtils.CUSTOMER_NAME.apply(order1));
 
         System.out.println("Delivery time " + LambdaUtils.DELIVERY_TIME.get());
 
-        LambdaUtils.PRINT_ORDER.accept(order);
+        LambdaUtils.PRINT_ORDER.accept(order1);
 
         double totalFee = LambdaUtils.ADD_DELIVERY_FEE.apply(10.0,5.0);
         System.out.println("Total fee: " + totalFee);
@@ -136,53 +139,45 @@ public class Main {
 
         //---------streams-----------------
         //distinct and foreach
-        customerSet
-                .stream()
+        customerSet.stream()
                 .map(Customer::getName)
                 .distinct()
                 .forEach(System.out::println);
 
         //flatmap
-        List<MenuItems> allItems = List.of(order)
-                .stream()
-                .flatMap(order1 -> order1.getItems().stream())
+        List<MenuItems> allItems = List.of(order1).stream()
+                .flatMap(order -> order.getItems().stream())
                 .toList();
 
         //reduce
-        BigDecimal total = List.of(order)
-                .stream()
+        BigDecimal total = List.of(order1).stream()
                 .map(Order::calculateTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         System.out.println("total revenue: " + total);
 
         //sorted
-        List<Order> sortedOrders = List.of(order)
-                .stream()
+        List<Order> sortedOrders = List.of(order1).stream()
                 .sorted(Comparator.comparing(Order::calculateTotal))
                 .toList();
         System.out.println("Sorted orders: " + sortedOrders);
 
         //filter
-        List<Customer> filteredName = customerSet
-                .stream()
+        List<Customer> filteredName = customerSet.stream()
                 .filter(n -> n.getName().startsWith("N"))
                 .toList();
 
         //collect
-        Set<String> availableDP = DeliveryPerson.getDp()
-                .stream()
+        Set<String> availableDP = DeliveryPerson.getDp().stream()
                 .filter(DeliveryPerson::isAvailable)
                 .map(DeliveryPerson::getName)
                 .collect(Collectors.toSet());
 
-        String joinedNames = customerSet.stream()
-                .map(Customer::getName)
+        String joinedNames = customerSet.stream().map(Customer::getName)
                 .reduce((a, b) -> a + ", " + b)
                 .orElse("No customers");
         System.out.println("All customers: " + joinedNames);
 
-        boolean allAvailable = List.of(dp)
-                .stream()
+        boolean allAvailable = List.of(dp).stream()
                 .allMatch(DeliveryPerson::isAvailable);
         System.out.println("All couriers available? " + allAvailable);
 
@@ -195,7 +190,7 @@ public class Main {
             if (method.isAnnotationPresent(Test.class)) {
                 Test test = method.getAnnotation(Test.class);
                 System.out.println(test.value());
-                method.invoke(order);
+                method.invoke(order1);
             }
         }
     }
