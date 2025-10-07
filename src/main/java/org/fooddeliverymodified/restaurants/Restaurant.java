@@ -1,13 +1,12 @@
 package org.fooddeliverymodified.restaurants;
 
 import org.fooddeliverymodified.customer.Customer;
-import org.fooddeliverymodified.enums.CuisineType;
 import org.fooddeliverymodified.interfaces.IMenu;
 import org.fooddeliverymodified.interfaces.Reviewable;
 import org.fooddeliverymodified.menu.Menu;
 import org.fooddeliverymodified.review.Review;
-import org.fooddeliverymodified.java.util.ArrayList;
-import org.fooddeliverymodified.java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Restaurant implements IMenu, Reviewable {
 

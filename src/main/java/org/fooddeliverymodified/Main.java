@@ -1,6 +1,7 @@
 package org.fooddeliverymodified;
 
 import org.fooddeliverymodified.base.FoodDeliveryService;
+import org.fooddeliverymodified.customer.Customer;
 import org.fooddeliverymodified.delivery.DeliveryLogger;
 import org.fooddeliverymodified.deliveryperson.DeliveryPerson;
 import org.fooddeliverymodified.enums.CuisineType;
@@ -8,15 +9,15 @@ import org.fooddeliverymodified.enums.DeliverySpeed;
 import org.fooddeliverymodified.enums.Discount;
 import org.fooddeliverymodified.enums.OrderStatus;
 import org.fooddeliverymodified.exceptions.RestaurantExcp;
-import org.fooddeliverymodified.customer.Customer;
-import org.fooddeliverymodified.generics.DeliveryAssignment;
 import org.fooddeliverymodified.generics.OrderNode;
 import org.fooddeliverymodified.lambdas.DeliveryCalculator;
+import org.fooddeliverymodified.lambdas.LambdaUtils;
 import org.fooddeliverymodified.lambdas.OrderValidator;
 import org.fooddeliverymodified.lambdas.TopCustomerPromo;
 import org.fooddeliverymodified.menu.Menu;
 import org.fooddeliverymodified.menu.MenuItems;
 import org.fooddeliverymodified.order.Order;
+import org.fooddeliverymodified.record.DeliveryAssignment;
 import org.fooddeliverymodified.reflectionTest.Test;
 import org.fooddeliverymodified.restaurants.Restaurant;
 
@@ -24,7 +25,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.List;
 import java.util.function.*;
 import java.util.stream.Collectors;
 
@@ -86,8 +86,8 @@ public class Main {
         System.out.println(orderNode);
 
         //Record
-        DeliveryAssignment<DeliveryPerson, Order> deliveryAssignment = new DeliveryAssignment<>(dp, order, DeliverySpeed.STANDARD);
-        System.out.println(deliveryAssignment);
+        DeliveryAssignment da = new DeliveryAssignment(dp,order,DeliverySpeed.STANDARD);
+        System.out.println("Delivery assignment for customer: " + order.getCustomer().getName());
 
         //the first element from set
         String firstCustomer = customerSet.iterator().next().getName();
@@ -119,20 +119,20 @@ public class Main {
 
         System.out.println("Total with promo: " + promo.calculateWithPromoCode(order));
 
-        //Built-in lambdas
-        Predicate<Order> expensiveOrder = order1 -> order1.calculateTotal().doubleValue() > 50.0;
-        Function<Order, String> customerName = order1 -> order1.getCustomer().getName();
-        Supplier<Integer> deliveryTime = () -> new Random().nextInt(60);
-        Consumer<Order> printOrder = order1 -> System.out.println("Order: " + order1);
-        BiFunction<Double, Double, Double> addDeliveryFee = Double::sum;
-
-        if (expensiveOrder.test(order)) {
-            System.out.println("Expensive order for: " + customerName.apply(order));
-            printOrder.accept(order);
-            System.out.println("Total with delivery: " +
-                    addDeliveryFee.apply(order.calculateTotal().doubleValue(), 5.0));
-            System.out.println("Delivery time: " + deliveryTime.get() + " minutes");
+        //labda Utils
+        System.out.println("---------------------------");
+        if(LambdaUtils.EXPENSIVE_ORDER.test(order)) {
+            System.out.println("Expensive order");
         }
+        System.out.println("Customer " + LambdaUtils.CUSTOMER_NAME.apply(order));
+
+        System.out.println("Delivery time " + LambdaUtils.DELIVERY_TIME.get());
+
+        LambdaUtils.PRINT_ORDER.accept(order);
+
+        double totalFee = LambdaUtils.ADD_DELIVERY_FEE.apply(10.0,5.0);
+        System.out.println("Total fee: " + totalFee);
+        System.out.println("----------------------");
 
         //---------streams-----------------
         //distinct and foreach
