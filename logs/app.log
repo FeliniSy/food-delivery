@@ -1,0 +1,19 @@
+2025-10-08 02:42:01 INFO  org.fooddeliverymodified.reader.DistinctWordCalculator - Processing done. Results saved to C:\Users\ninik\Desktop\Java projects\food-delivery-modified\src\main\resources\Results.txt 
+2025-10-08 02:42:39 INFO  org.fooddeliverymodified.Main - Restaurant{name='Dolce Pizza', address='Tsereteli St.'}
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Liza
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - John Doe
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - OrderNode{customer=Customer [name=John Doe], order=org.fooddeliverymodified.order.Order@192d43ce, items=[{Pizza=15}]}
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Delivery assignment for customer: Liza
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Liza
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Delivery fee: 1.29
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - order is valid
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Total with promo: 2.25
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - ---------------------------
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Customer Liza
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Delivery time 19
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Total fee: 15.0
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - ----------------------
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - total revenue: 15
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - Sorted orders: [org.fooddeliverymodified.order.Order@192d43ce]
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - All customers: Liza, John Doe
+2025-10-08 02:42:40 INFO  org.fooddeliverymodified.Main - All couriers available? true
