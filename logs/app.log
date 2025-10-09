@@ -17,3 +17,22 @@
 2025-10-08 02:42:40 INFO  com.solvd.Main - Sorted orders: [order.com.solvd.Order@192d43ce]
 2025-10-08 02:42:40 INFO  com.solvd.Main - All customers: Liza, John Doe
 2025-10-08 02:42:40 INFO  com.solvd.Main - All couriers available? true
+2025-10-09 13:30:27 INFO  com.solvd.Main - Restaurant{name='Dolce Pizza', address='Tsereteli St.'}
+2025-10-09 13:30:27 INFO  com.solvd.Main - Liza
+2025-10-09 13:30:27 INFO  com.solvd.Main - John Doe
+2025-10-09 13:30:27 INFO  com.solvd.Main - OrderNode{customer=Customer [name=John Doe], order=com.solvd.order.Order@1ab3a8c8, items=[{Pizza=15}]}
+2025-10-09 13:30:27 INFO  com.solvd.Main - Delivery assignment for customer: Liza
+2025-10-09 13:30:27 INFO  com.solvd.Main - Liza
+2025-10-09 13:30:27 INFO  com.solvd.Main - Delivery fee: 1.29
+2025-10-09 13:30:27 INFO  com.solvd.Main - order is valid
+2025-10-09 13:30:27 INFO  com.solvd.Main - Total with promo: 2.25
+2025-10-09 13:30:27 INFO  com.solvd.Main - ---------------------------
+2025-10-09 13:30:28 INFO  com.solvd.Main - Customer Liza
+2025-10-09 13:30:28 INFO  com.solvd.Main - Delivery time 32
+2025-10-09 13:30:28 INFO  com.solvd.Main - Total fee: 15.0
+2025-10-09 13:30:28 INFO  com.solvd.Main - ----------------------
+2025-10-09 13:30:28 INFO  com.solvd.Main - total revenue: 15
+2025-10-09 13:30:28 INFO  com.solvd.Main - Sorted orders: [com.solvd.order.Order@1ab3a8c8]
+2025-10-09 13:30:28 INFO  com.solvd.Main - All customers: Liza, John Doe
+2025-10-09 13:30:28 INFO  com.solvd.Main - All couriers available? true
+2025-10-09 13:30:28 INFO  com.solvd.Main - Order is not valid

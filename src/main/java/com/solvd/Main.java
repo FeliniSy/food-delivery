@@ -71,7 +71,7 @@ public class Main {
         }
 
         Customer customer1 = new Customer("John Doe", "nikea str");
-        Customer customer2 = new Customer("Liza", "nikea str");
+        Customer customer2 = new Customer("Liza", "tsereteli str");
         customerSet.add(customer1);
         customerSet.add(customer2);
 
@@ -84,7 +84,7 @@ public class Main {
         pizza.addMenuItems("Pizza", new BigDecimal(15));
         order1.addItem(pizza);
 
-        DeliveryPerson dp = new DeliveryPerson("George", "Kutaisi");
+        DeliveryPerson dp = new DeliveryPerson("Giorgi", "Kutaisi");
 
         try (DeliveryLogger logger = new DeliveryLogger("delivery_log.txt")) {
             logger.log("New delivery started for customer: " + order1.getCustomer().getName());
@@ -207,7 +207,6 @@ public class Main {
                 method.invoke(order1);
             }
         }
-
         checkOrder(order1, order -> !order.getItems().isEmpty() && order.getCustomer() == null);
     }
 }
