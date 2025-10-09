@@ -1,9 +1,0 @@
-package org.fooddeliverymodified.lambdas;
-
-import org.fooddeliverymodified.order.Order;
-
-@FunctionalInterface
-public interface TopCustomerPromo {
-
-    double calculateWithPromoCode(Order order);
-}
