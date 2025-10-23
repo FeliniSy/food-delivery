@@ -41,7 +41,7 @@ public class Main {
             logger.info("Order is not valid");
         }
     }
-    
+
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public Main() {
