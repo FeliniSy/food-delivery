@@ -5,6 +5,9 @@ import com.solvd.fooddelivery.pool.MockConnection;
 import com.solvd.fooddelivery.threads.RunnableThread;
 import com.solvd.fooddelivery.threads.ThreadExample;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -46,6 +49,29 @@ public class MainForThread {
 
         executor.shutdown();
         executor.awaitTermination(10, TimeUnit.SECONDS);
+
+        System.out.println("\n=== Part 3: CompletableFuture Implementation ===");
+
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for (int i = 1; i <= 7; i++) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                try {
+                    MockConnection conn = pool.getConnection();
+                    conn.create();
+                    Thread.sleep(1000);
+                    conn.update();
+                    pool.releaseConnection(conn);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            futures.add(future);
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        System.out.println("\n=== All CompletableFuture tasks completed successfully ===");
 
         System.out.println("\n=== Program finished successfully ===");
     }
